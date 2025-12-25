@@ -1,0 +1,11 @@
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\bin\Release\net10.0\DrawingShared.deps.json
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\bin\Release\net10.0\DrawingShared.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\bin\Release\net10.0\DrawingShared.pdb
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\DrawingShared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\DrawingShared.AssemblyInfoInputs.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\DrawingShared.AssemblyInfo.cs
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\DrawingShared.csproj.CoreCompileInputs.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\DrawingShared.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\refint\DrawingShared.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\DrawingShared.pdb
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Release\net10.0\ref\DrawingShared.dll

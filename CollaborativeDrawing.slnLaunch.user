@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "DrawingClient\\DrawingClient.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "DrawingShared\\DrawingShared.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

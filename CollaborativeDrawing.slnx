@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="DrawingClient/DrawingClient.csproj" />
+  <Project Path="DrawingServer/DrawingServer.csproj" />
+  <Project Path="DrawingShared/DrawingShared.csproj" />
+</Solution>

@@ -1,0 +1,75 @@
+﻿<Window x:Class="DrawingClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrawingClient"
+        mc:Ignorable="d"
+        Title="Collaborative Drawing" Height="450" Width="800"
+        Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Padding="10" Background="#F0F0F0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Server: " VerticalAlignment="Center"/>
+                <TextBox x:Name="ServerUrlInput" Text="ws://localhost:5266/ws" Width="200" Margin="5,0"/>
+                <Button Content="Connect" Click="Connect_Click" Padding="10,2" Margin="5,0"/>
+                <Separator Margin="10,0"/>
+                <TextBlock Text="Status: " FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusText" Text="Disconnected" Foreground="Red" VerticalAlignment="Center"/>
+                <Separator Margin="10,0"/>
+                
+                <!-- Tool Selection -->
+                <TextBlock Text="Tool: " VerticalAlignment="Center" FontWeight="Bold"/>
+                <ComboBox x:Name="ToolPicker" SelectedIndex="0" Width="100" Margin="5,0"
+                          SelectionChanged="ToolPicker_SelectionChanged">
+                    <ComboBoxItem Content="Brush" Tag="Brush"/>
+                    <ComboBoxItem Content="Eraser" Tag="Eraser"/>
+                    <ComboBoxItem Content="Pointer" Tag="Pointer"/>
+                    <ComboBoxItem Content="Circle" Tag="Circle"/>
+                    <ComboBoxItem Content="Square" Tag="Square"/>
+                    <ComboBoxItem Content="Rectangle" Tag="Rectangle"/>
+                    <ComboBoxItem Content="Triangle" Tag="Triangle"/>
+                </ComboBox>
+                
+                <Separator Margin="10,0"/>
+                
+                <!-- Brush Size Control -->
+                <TextBlock Text="Brush Size: " VerticalAlignment="Center" FontWeight="Bold"/>
+                <Slider x:Name="BrushSizeSlider" Width="120" Minimum="1" Maximum="20" 
+                        Value="3" VerticalAlignment="Center" 
+                        ValueChanged="BrushSizeSlider_ValueChanged"
+                        ToolTip="Adjust brush size"/>
+                <TextBlock x:Name="BrushSizeText" Text="3" VerticalAlignment="Center" 
+                           Width="25" Margin="5,0" FontWeight="Bold"/>
+                
+                <Separator Margin="10,0"/>
+                
+                <!-- Color Selection -->
+                <TextBlock Text="Color: " VerticalAlignment="Center" FontWeight="Bold"/>
+                <ComboBox x:Name="ColorPicker" SelectedIndex="0" Width="100" Margin="5,0">
+                    <ComboBoxItem Content="Black" Tag="#000000"/>
+                    <ComboBoxItem Content="Red" Tag="#FF0000"/>
+                    <ComboBoxItem Content="Blue" Tag="#0000FF"/>
+                    <ComboBoxItem Content="Green" Tag="#008000"/>
+                    <ComboBoxItem Content="Yellow" Tag="#FFFF00"/>
+                    <ComboBoxItem Content="Purple" Tag="#800080"/>
+                </ComboBox>
+                
+                <Separator Margin="10,0"/>
+                <Button Content="Clear Canvas" Click="Clear_Click" Padding="10,2" Margin="5,0" Background="#FFE6E6" BorderBrush="#FF9999"/>
+                <Separator Margin="10,0"/>
+                <Button Content="Download" Click="Download_Click" Padding="10,2" Margin="5,0" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+
+        <Canvas x:Name="DrawingCanvas" Grid.Row="1" Background="White"
+                MouseDown="DrawingCanvas_MouseDown"
+                MouseMove="DrawingCanvas_MouseMove"
+                MouseUp="DrawingCanvas_MouseUp"/>
+    </Grid>
+</Window>

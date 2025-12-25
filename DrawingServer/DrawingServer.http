@@ -1,0 +1,6 @@
+@DrawingServer_HostAddress = http://localhost:5000
+
+GET {{DrawingServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

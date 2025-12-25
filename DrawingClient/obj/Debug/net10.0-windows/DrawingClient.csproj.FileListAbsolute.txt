@@ -1,0 +1,64 @@
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.csproj.AssemblyReference.cache
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\App.g.cs
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient_MarkupCompile.cache
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.exe
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.deps.json
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.runtimeconfig.json
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.dll
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.pdb
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingShared.dll
+C:\Users\PC\Documents\NP Project\DrawingClient\bin\Debug\net10.0-windows\DrawingShared.pdb
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\MainWindow.g.cs
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient_MarkupCompile.lref
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\MainWindow.baml
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.g.resources
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.AssemblyInfoInputs.cache
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.AssemblyInfo.cs
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.csproj.CoreCompileInputs.cache
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingC.8BBF3A46.Up2Date
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.dll
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\refint\DrawingClient.dll
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.pdb
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.genruntimeconfig.cache
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\ref\DrawingClient.dll
+C:\Users\PC\Documents\NP Project\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.sourcelink.json
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.exe
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.deps.json
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.runtimeconfig.json
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingClient.pdb
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingShared.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\DrawingShared.pdb
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.csproj.AssemblyReference.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\MainWindow.g.cs
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\App.g.cs
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient_MarkupCompile.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient_MarkupCompile.lref
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\MainWindow.baml
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.g.resources
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.AssemblyInfoInputs.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.AssemblyInfo.cs
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.csproj.CoreCompileInputs.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingC.8BBF3A46.Up2Date
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\refint\DrawingClient.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.pdb
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.genruntimeconfig.cache
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\ref\DrawingClient.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\Microsoft.Extensions.Logging.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.BarCodes.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.Charting.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.Cryptography.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.Quality.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.Shared.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.Snippets.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.System.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.WPFonts.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.dll
