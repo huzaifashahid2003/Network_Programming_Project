@@ -21,3 +21,4 @@ C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Debug\net1
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Debug\net10.0\refint\DrawingShared.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Debug\net10.0\DrawingShared.pdb
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Debug\net10.0\ref\DrawingShared.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingShared\obj\Debug\net10.0\DrawingShared.sourcelink.json

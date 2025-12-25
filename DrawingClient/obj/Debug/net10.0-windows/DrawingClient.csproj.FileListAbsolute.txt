@@ -62,3 +62,4 @@ C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net1
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.System.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.WPFonts.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\bin\Debug\net10.0-windows\PdfSharp.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingClient\obj\Debug\net10.0-windows\DrawingClient.sourcelink.json

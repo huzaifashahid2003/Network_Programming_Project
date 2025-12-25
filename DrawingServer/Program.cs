@@ -1,54 +1,140 @@
-using DrawingServer;
-using System.Net.WebSockets;
+using System.Net;
+using System.Net.Sockets;
+using System.Net.NetworkInformation;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddSingleton<WebSocketConnectionManager>();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-app.UseWebSockets();
-
-app.Map("/ws", async (HttpContext context, WebSocketConnectionManager connectionManager) =>
+namespace DrawingServer
 {
-    if (context.WebSockets.IsWebSocketRequest)
+    class Program
     {
-        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-        var socketId = connectionManager.AddSocket(webSocket);
-        
-        var buffer = new byte[1024 * 4];
-        
-        try
+        private static readonly TcpConnectionManager _connectionManager = new TcpConnectionManager();
+        private static TcpListener? _listener;
+        private const int DEFAULT_PORT = 5266;
+
+        static async Task Main(string[] args)
         {
-            while (webSocket.State == WebSocketState.Open)
+            Console.Title = "Collaborative Drawing Server";
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("╔════════════════════════════════════════════════╗");
+            Console.WriteLine("║   COLLABORATIVE DRAWING TCP SERVER             ║");
+            Console.WriteLine("╚════════════════════════════════════════════════╝");
+            Console.ResetColor();
+
+            // Display all available LAN IP addresses
+            DisplayServerIpAddresses();
+
+            int port = DEFAULT_PORT;
+            Console.WriteLine($"\nStarting TCP Server on port {port}...");
+
+            try
             {
-                var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                
-                if (result.MessageType == WebSocketMessageType.Text)
+                _listener = new TcpListener(IPAddress.Any, port);
+                _listener.Start();
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"✓ Server started successfully!");
+                Console.WriteLine($"✓ Listening on port {port}");
+                Console.WriteLine($"✓ Clients can connect using: <SERVER_LAN_IP>:{port}");
+                Console.ResetColor();
+                Console.WriteLine("\nWaiting for clients to connect...\n");
+
+                // Start accepting clients
+                while (true)
                 {
-                    var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    // Broadcast to other clients
-                    await connectionManager.BroadcastAsync(message, socketId);
-                }
-                else if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    await connectionManager.RemoveSocketAsync(socketId);
+                    var client = await _listener.AcceptTcpClientAsync();
+                    _ = Task.Run(() => HandleClientAsync(client));
                 }
             }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"✗ Server Error: {ex.Message}");
+                Console.ResetColor();
+            }
         }
-        catch (WebSocketException)
-        {
-            // Client disconnected abruptly
-            await connectionManager.RemoveSocketAsync(socketId);
-        }
-    }
-    else
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-    }
-});
 
-app.Run();
+        private static void DisplayServerIpAddresses()
+        {
+            Console.WriteLine("\n📡 Available Network Interfaces:");
+            Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+            foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (networkInterface.OperationalStatus == OperationalStatus.Up)
+                {
+                    var properties = networkInterface.GetIPProperties();
+                    foreach (var ip in properties.UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"  • {networkInterface.Name,-25} → {ip.Address}");
+                            Console.ResetColor();
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        }
+
+        private static async Task HandleClientAsync(TcpClient client)
+        {
+            var clientEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
+            var clientIp = clientEndPoint?.Address.ToString() ?? "Unknown";
+            var clientPort = clientEndPoint?.Port ?? 0;
+            var clientId = Guid.NewGuid().ToString();
+
+            // Add client to connection manager
+            _connectionManager.AddClient(clientId, client, clientIp, clientPort);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] ✓ NEW CONNECTION");
+            Console.WriteLine($"                   Client ID: {clientId[..8]}...");
+            Console.WriteLine($"                   IP Address: {clientIp}:{clientPort}");
+            Console.WriteLine($"                   Total Clients: {_connectionManager.GetClientCount()}");
+            Console.ResetColor();
+
+            try
+            {
+                var stream = client.GetStream();
+                var buffer = new byte[8192]; // Larger buffer for drawing data
+
+                while (client.Connected)
+                {
+                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+
+                    if (bytesRead == 0)
+                    {
+                        // Client disconnected gracefully
+                        break;
+                    }
+
+                    // Get the drawing event message
+                    var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+                    // Broadcast to all other clients
+                    await _connectionManager.BroadcastAsync(message, clientId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] ⚠ Client error ({clientIp}): {ex.Message}");
+                Console.ResetColor();
+            }
+            finally
+            {
+                // Remove client from manager
+                _connectionManager.RemoveClient(clientId);
+
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] ✗ DISCONNECTED");
+                Console.WriteLine($"                   IP Address: {clientIp}:{clientPort}");
+                Console.WriteLine($"                   Total Clients: {_connectionManager.GetClientCount()}");
+                Console.ResetColor();
+
+                client.Close();
+            }
+        }
+    }
+}

@@ -15,12 +15,15 @@
 
         <Border Padding="10" Background="#F0F0F0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Server: " VerticalAlignment="Center"/>
-                <TextBox x:Name="ServerUrlInput" Text="ws://localhost:5266/ws" Width="200" Margin="5,0"/>
-                <Button Content="Connect" Click="Connect_Click" Padding="10,2" Margin="5,0"/>
+                <TextBlock Text="Server IP: " VerticalAlignment="Center" FontWeight="Bold"/>
+                <TextBox x:Name="ServerIpInput" Text="192.168.1.100" Width="120" Margin="5,0" ToolTip="Enter server LAN IP address"/>
+                <TextBlock Text="Port: " VerticalAlignment="Center" FontWeight="Bold" Margin="10,0,0,0"/>
+                <TextBox x:Name="ServerPortInput" Text="5266" Width="60" Margin="5,0"/>
+                <Button Content="Connect" Click="Connect_Click" Padding="10,2" Margin="5,0" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+                <Button Content="Disconnect" Click="Disconnect_Click" Padding="10,2" Margin="5,0" Background="#f44336" Foreground="White" FontWeight="Bold"/>
                 <Separator Margin="10,0"/>
                 <TextBlock Text="Status: " FontWeight="Bold" VerticalAlignment="Center"/>
-                <TextBlock x:Name="StatusText" Text="Disconnected" Foreground="Red" VerticalAlignment="Center"/>
+                <TextBlock x:Name="StatusText" Text="Disconnected" Foreground="Red" VerticalAlignment="Center" FontWeight="Bold"/>
                 <Separator Margin="10,0"/>
                 
                 <!-- Tool Selection -->

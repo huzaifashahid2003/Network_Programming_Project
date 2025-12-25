@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DrawingShared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7690b4df68ddb3f028e0bc52c2911b346b274ef5")]
 [assembly: System.Reflection.AssemblyProductAttribute("DrawingShared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DrawingShared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,53 +1,120 @@
 using System.Collections.Concurrent;
-using System.Net.WebSockets;
+using System.Net.Sockets;
 using System.Text;
 
 namespace DrawingServer
 {
-    public class WebSocketConnectionManager
+    /// <summary>
+    /// Manages all connected TCP clients and handles broadcasting messages
+    /// </summary>
+    public class TcpConnectionManager
     {
-        private readonly ConcurrentDictionary<string, WebSocket> _sockets = new();
+        private readonly ConcurrentDictionary<string, ClientConnection> _clients = new();
 
-        public string AddSocket(WebSocket socket)
+        /// <summary>
+        /// Represents a connected client with their connection details
+        /// </summary>
+        private class ClientConnection
         {
-            var id = Guid.NewGuid().ToString();
-            _sockets.TryAdd(id, socket);
-            return id;
-        }
+            public TcpClient Client { get; set; }
+            public string IpAddress { get; set; }
+            public int Port { get; set; }
+            public DateTime ConnectedAt { get; set; }
 
-        public async Task RemoveSocketAsync(string id)
-        {
-            if (_sockets.TryRemove(id, out var socket))
+            public ClientConnection(TcpClient client, string ipAddress, int port)
             {
-                if (socket.State == WebSocketState.Open)
-                {
-                    await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by server", CancellationToken.None);
-                }
+                Client = client;
+                IpAddress = ipAddress;
+                Port = port;
+                ConnectedAt = DateTime.Now;
             }
         }
 
+        /// <summary>
+        /// Adds a new client to the connection manager
+        /// </summary>
+        public void AddClient(string clientId, TcpClient client, string ipAddress, int port)
+        {
+            var connection = new ClientConnection(client, ipAddress, port);
+            _clients.TryAdd(clientId, connection);
+        }
+
+        /// <summary>
+        /// Removes a client from the connection manager
+        /// </summary>
+        public void RemoveClient(string clientId)
+        {
+            _clients.TryRemove(clientId, out _);
+        }
+
+        /// <summary>
+        /// Gets the current number of connected clients
+        /// </summary>
+        public int GetClientCount()
+        {
+            return _clients.Count;
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all connected clients except the sender
+        /// </summary>
         public async Task BroadcastAsync(string message, string senderId)
         {
-            var buffer = Encoding.UTF8.GetBytes(message);
-            var segment = new ArraySegment<byte>(buffer);
+            var messageBytes = Encoding.UTF8.GetBytes(message);
+            var tasksToAwait = new List<Task>();
 
-            foreach (var (id, socket) in _sockets)
+            foreach (var (clientId, connection) in _clients)
             {
-                if (id == senderId) continue; // Don't echo back to sender if client handles local drawing
+                // Don't send the message back to the sender
+                if (clientId == senderId)
+                    continue;
 
-                if (socket.State == WebSocketState.Open)
+                // Only send to connected clients
+                if (!connection.Client.Connected)
                 {
-                    try
-                    {
-                        await socket.SendAsync(segment, WebSocketMessageType.Text, true, CancellationToken.None);
-                    }
-                    catch
-                    {
-                        // Handle broken connections gracefully
-                        await RemoveSocketAsync(id);
-                    }
+                    RemoveClient(clientId);
+                    continue;
                 }
+
+                tasksToAwait.Add(SendMessageToClientAsync(clientId, connection, messageBytes));
             }
+
+            // Wait for all broadcasts to complete
+            await Task.WhenAll(tasksToAwait);
+        }
+
+        /// <summary>
+        /// Sends a message to a specific client
+        /// </summary>
+        private async Task SendMessageToClientAsync(string clientId, ClientConnection connection, byte[] messageBytes)
+        {
+            try
+            {
+                var stream = connection.Client.GetStream();
+                await stream.WriteAsync(messageBytes, 0, messageBytes.Length);
+                await stream.FlushAsync();
+            }
+            catch (Exception)
+            {
+                // If sending fails, remove the client
+                RemoveClient(clientId);
+            }
+        }
+
+        /// <summary>
+        /// Gets information about all connected clients
+        /// </summary>
+        public List<string> GetConnectedClientsInfo()
+        {
+            var clientsInfo = new List<string>();
+
+            foreach (var (clientId, connection) in _clients)
+            {
+                var info = $"Client {clientId[..8]}... | IP: {connection.IpAddress}:{connection.Port} | Connected: {connection.ConnectedAt:HH:mm:ss}";
+                clientsInfo.Add(info);
+            }
+
+            return clientsInfo;
         }
     }
 }

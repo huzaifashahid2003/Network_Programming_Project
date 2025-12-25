@@ -1,5 +1,5 @@
 ﻿using DrawingShared;
-using System.Net.WebSockets;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
@@ -16,7 +16,8 @@ namespace DrawingClient
 {
     public partial class MainWindow : Window
     {
-        private ClientWebSocket? _webSocket;
+        private TcpClient? _tcpClient;
+        private NetworkStream? _networkStream;
         private bool _isDrawing;
         private Point _lastPoint;
         private Point _startPoint;
@@ -28,6 +29,7 @@ namespace DrawingClient
         private Brush? _originalStrokeBrush;
         private bool _isDraggingShape;
         private Point _dragStartPoint;
+        private bool _isConnected = false;
 
         public MainWindow()
         {
@@ -94,84 +96,146 @@ namespace DrawingClient
 
         private async void Connect_Click(object sender, RoutedEventArgs e)
         {
-            if (_webSocket != null && _webSocket.State == WebSocketState.Open)
+            if (_isConnected)
             {
-                MessageBox.Show("Already connected.");
+                MessageBox.Show("Already connected to server.", "Connection Status", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            var url = ServerUrlInput.Text;
-            await ConnectToServerAsync(url);
+            var serverIp = ServerIpInput.Text.Trim();
+            var serverPortText = ServerPortInput.Text.Trim();
+
+            if (string.IsNullOrEmpty(serverIp))
+            {
+                MessageBox.Show("Please enter the server IP address.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(serverPortText, out int serverPort) || serverPort <= 0 || serverPort > 65535)
+            {
+                MessageBox.Show("Please enter a valid port number (1-65535).", "Invalid Port", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            await ConnectToServerAsync(serverIp, serverPort);
         }
 
-        private async Task ConnectToServerAsync(string url)
+        private async void Disconnect_Click(object sender, RoutedEventArgs e)
         {
-            _webSocket = new ClientWebSocket();
-            _cts = new CancellationTokenSource();
+            if (!_isConnected)
+            {
+                MessageBox.Show("Not connected to any server.", "Connection Status", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
+            await DisconnectFromServerAsync();
+            MessageBox.Show("Disconnected from server successfully.", "Disconnected", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private async Task ConnectToServerAsync(string serverIp, int serverPort)
+        {
             try
             {
                 StatusText.Text = "Connecting...";
                 StatusText.Foreground = Brushes.Orange;
 
-                await _webSocket.ConnectAsync(new Uri(url), _cts.Token);
-                
-                StatusText.Text = "Connected";
+                _tcpClient = new TcpClient();
+                _cts = new CancellationTokenSource();
+
+                // Connect to the TCP server
+                await _tcpClient.ConnectAsync(serverIp, serverPort);
+                _networkStream = _tcpClient.GetStream();
+                _isConnected = true;
+
+                StatusText.Text = $"Connected to {serverIp}:{serverPort}";
                 StatusText.Foreground = Brushes.Green;
 
+                // Start receiving messages from server
                 _ = ReceiveMessagesAsync();
             }
             catch (Exception ex)
             {
-                StatusText.Text = "Failed";
+                StatusText.Text = "Connection Failed";
                 StatusText.Foreground = Brushes.Red;
-                MessageBox.Show($"Connection Failed: {ex.Message}");
+                _isConnected = false;
+                MessageBox.Show($"Failed to connect to server:\n\n{ex.Message}\n\nPlease check:\n• Server is running\n• IP address is correct\n• Port number is correct\n• Firewall settings", 
+                    "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task DisconnectFromServerAsync()
+        {
+            try
+            {
+                _cts?.Cancel();
+                _networkStream?.Close();
+                _tcpClient?.Close();
+                _isConnected = false;
+
+                StatusText.Text = "Disconnected";
+                StatusText.Foreground = Brushes.Red;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during disconnect: {ex.Message}", "Disconnect Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private async Task ReceiveMessagesAsync()
         {
-            var buffer = new byte[1024 * 4];
+            var buffer = new byte[8192]; // Larger buffer for drawing data
 
             try
             {
-                while (_webSocket.State == WebSocketState.Open)
+                while (_isConnected && _networkStream != null && _tcpClient != null && _tcpClient.Connected)
                 {
-                    var result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
+                    int bytesRead = await _networkStream.ReadAsync(buffer, 0, buffer.Length, _cts?.Token ?? CancellationToken.None);
 
-                    if (result.MessageType == WebSocketMessageType.Text)
+                    if (bytesRead == 0)
                     {
-                        var json = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                        var drawEvent = JsonSerializer.Deserialize<DrawEvent>(json);
+                        // Server closed the connection
+                        break;
+                    }
 
-                        if (drawEvent != null)
+                    // Deserialize the received drawing event
+                    var json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    var drawEvent = JsonSerializer.Deserialize<DrawEvent>(json);
+
+                    if (drawEvent != null)
+                    {
+                        Dispatcher.Invoke(() =>
                         {
-                            Dispatcher.Invoke(() =>
+                            if (drawEvent.Type == EventType.Clear)
                             {
-                                if (drawEvent.Type == EventType.Clear)
-                                {
-                                    DrawingCanvas.Children.Clear();
-                                }
-                                else if (drawEvent.Type == EventType.Erase)
-                                {
-                                    EraseAtPoint(new Point(drawEvent.StartX, drawEvent.StartY));
-                                }
-                                else
-                                {
-                                    DrawShape(drawEvent);
-                                }
-                            });
-                        }
+                                DrawingCanvas.Children.Clear();
+                            }
+                            else if (drawEvent.Type == EventType.Erase)
+                            {
+                                EraseAtPoint(new Point(drawEvent.StartX, drawEvent.StartY));
+                            }
+                            else
+                            {
+                                DrawShape(drawEvent);
+                            }
+                        });
                     }
                 }
             }
-            catch (OperationCanceledException) { }
-            catch (Exception)
+            catch (OperationCanceledException)
+            {
+                // Normal cancellation
+            }
+            catch (Exception ex)
             {
                 Dispatcher.Invoke(() =>
                 {
-                    StatusText.Text = "Disconnected";
-                    StatusText.Foreground = Brushes.Red;
+                    if (_isConnected)
+                    {
+                        StatusText.Text = "Connection Lost";
+                        StatusText.Foreground = Brushes.Red;
+                        _isConnected = false;
+                        MessageBox.Show($"Lost connection to server:\n{ex.Message}", "Connection Lost", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 });
             }
         }
@@ -234,8 +298,8 @@ namespace DrawingClient
                             _originalStrokeBrush = null;
                         }
                         
-                        StatusText.Text = _webSocket?.State == WebSocketState.Open ? "Connected" : "Disconnected";
-                        StatusText.Foreground = _webSocket?.State == WebSocketState.Open ? Brushes.Green : Brushes.Red;
+                        StatusText.Text = _isConnected ? "Connected" : "Disconnected";
+                        StatusText.Foreground = _isConnected ? Brushes.Green : Brushes.Red;
                     }
                     return; // Pointer tool never draws
                 }
@@ -634,26 +698,31 @@ namespace DrawingClient
 
         private async Task SendDrawEventAsync(DrawEvent drawEvent)
         {
-            if (_webSocket != null && _webSocket.State == WebSocketState.Open && _cts != null)
+            if (_isConnected && _networkStream != null && _tcpClient != null && _tcpClient.Connected)
             {
-                var json = JsonSerializer.Serialize(drawEvent);
-                var buffer = Encoding.UTF8.GetBytes(json);
-                await _webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, _cts.Token);
+                try
+                {
+                    var json = JsonSerializer.Serialize(drawEvent);
+                    var buffer = Encoding.UTF8.GetBytes(json);
+                    await _networkStream.WriteAsync(buffer, 0, buffer.Length);
+                    await _networkStream.FlushAsync();
+                }
+                catch (Exception)
+                {
+                    // Connection lost, update UI
+                    Dispatcher.Invoke(() =>
+                    {
+                        StatusText.Text = "Connection Lost";
+                        StatusText.Foreground = Brushes.Red;
+                        _isConnected = false;
+                    });
+                }
             }
         }
 
         private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _cts?.Cancel();
-            if (_webSocket != null)
-            {
-                try
-                {
-                    await _webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Client closing", CancellationToken.None);
-                }
-                catch { }
-                _webSocket.Dispose();
-            }
+            await DisconnectFromServerAsync();
         }
 
         private void Download_Click(object sender, RoutedEventArgs e)

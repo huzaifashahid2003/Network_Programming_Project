@@ -34,38 +34,22 @@ C:\Users\PC\Documents\NP Project\DrawingServer\obj\Debug\net10.0\DrawingServer.p
 C:\Users\PC\Documents\NP Project\DrawingServer\obj\Debug\net10.0\DrawingServer.genruntimeconfig.cache
 C:\Users\PC\Documents\NP Project\DrawingServer\obj\Debug\net10.0\ref\DrawingServer.dll
 C:\Users\PC\Documents\NP Project\DrawingServer\obj\Debug\net10.0\DrawingServer.sourcelink.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\appsettings.Development.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\appsettings.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingServer.staticwebassets.endpoints.json
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingServer.exe
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingServer.deps.json
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingServer.runtimeconfig.json
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingServer.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingServer.pdb
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\Microsoft.OpenApi.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingShared.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\bin\Debug\net10.0\DrawingShared.pdb
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.csproj.AssemblyReference.cache
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\rpswa.dswa.cache.json
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.AssemblyInfoInputs.cache
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.AssemblyInfo.cs
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.csproj.CoreCompileInputs.cache
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\rjimswa.dswa.cache.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\scopedcss\bundle\DrawingServer.styles.css
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\staticwebassets.build.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\staticwebassets.build.json.cache
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\staticwebassets.development.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\staticwebassets.build.endpoints.json
-C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\swae.build.ex.cache
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingS.E35FEC39.Up2Date
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\refint\DrawingServer.dll
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.pdb
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.genruntimeconfig.cache
 C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\ref\DrawingServer.dll
+C:\Users\Huzaifa\Downloads\canvas-drawing-sync-main\DrawingServer\obj\Debug\net10.0\DrawingServer.sourcelink.json
