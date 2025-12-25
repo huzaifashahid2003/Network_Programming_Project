@@ -5,69 +5,92 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DrawingClient"
         mc:Ignorable="d"
-        Title="Collaborative Drawing" Height="450" Width="800"
-        Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Collaborative Drawing" Height="600" Width="1000" MinHeight="500" MinWidth="900"
+        Loaded="Window_Loaded" Closing="Window_Closing" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Padding="10" Background="#F0F0F0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Server IP: " VerticalAlignment="Center" FontWeight="Bold"/>
-                <TextBox x:Name="ServerIpInput" Text="192.168.1.100" Width="120" Margin="5,0" ToolTip="Enter server LAN IP address"/>
-                <TextBlock Text="Port: " VerticalAlignment="Center" FontWeight="Bold" Margin="10,0,0,0"/>
-                <TextBox x:Name="ServerPortInput" Text="5266" Width="60" Margin="5,0"/>
-                <Button Content="Connect" Click="Connect_Click" Padding="10,2" Margin="5,0" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
-                <Button Content="Disconnect" Click="Disconnect_Click" Padding="10,2" Margin="5,0" Background="#f44336" Foreground="White" FontWeight="Bold"/>
-                <Separator Margin="10,0"/>
-                <TextBlock Text="Status: " FontWeight="Bold" VerticalAlignment="Center"/>
-                <TextBlock x:Name="StatusText" Text="Disconnected" Foreground="Red" VerticalAlignment="Center" FontWeight="Bold"/>
-                <Separator Margin="10,0"/>
+        <Border Padding="8" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 
-                <!-- Tool Selection -->
-                <TextBlock Text="Tool: " VerticalAlignment="Center" FontWeight="Bold"/>
-                <ComboBox x:Name="ToolPicker" SelectedIndex="0" Width="100" Margin="5,0"
-                          SelectionChanged="ToolPicker_SelectionChanged">
-                    <ComboBoxItem Content="Brush" Tag="Brush"/>
-                    <ComboBoxItem Content="Eraser" Tag="Eraser"/>
-                    <ComboBoxItem Content="Pointer" Tag="Pointer"/>
-                    <ComboBoxItem Content="Circle" Tag="Circle"/>
-                    <ComboBoxItem Content="Square" Tag="Square"/>
-                    <ComboBoxItem Content="Rectangle" Tag="Rectangle"/>
-                    <ComboBoxItem Content="Triangle" Tag="Triangle"/>
-                </ComboBox>
+                <!-- Row 1: Connection Controls -->
+                <WrapPanel Grid.Row="0" Margin="0,0,0,8">
+                    <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Padding="8,4" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Server IP:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                            <TextBox x:Name="ServerIpInput" Text="192.168.1.100" Width="110" Margin="0,0,10,0" ToolTip="Enter server LAN IP address" VerticalAlignment="Center"/>
+                            <TextBlock Text="Port:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                            <TextBox x:Name="ServerPortInput" Text="5266" Width="50" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <Button Content="Connect" Click="Connect_Click" Padding="8,3" Margin="0,0,5,0" Background="#4CAF50" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"/>
+                            <Button Content="Disconnect" Click="Disconnect_Click" Padding="8,3" Background="#f44336" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Padding="8,4">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Status:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBlock x:Name="StatusText" Text="Disconnected" Foreground="Red" VerticalAlignment="Center" FontWeight="Bold" MinWidth="90"/>
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
                 
-                <Separator Margin="10,0"/>
-                
-                <!-- Brush Size Control -->
-                <TextBlock Text="Brush Size: " VerticalAlignment="Center" FontWeight="Bold"/>
-                <Slider x:Name="BrushSizeSlider" Width="120" Minimum="1" Maximum="20" 
-                        Value="3" VerticalAlignment="Center" 
-                        ValueChanged="BrushSizeSlider_ValueChanged"
-                        ToolTip="Adjust brush size"/>
-                <TextBlock x:Name="BrushSizeText" Text="3" VerticalAlignment="Center" 
-                           Width="25" Margin="5,0" FontWeight="Bold"/>
-                
-                <Separator Margin="10,0"/>
-                
-                <!-- Color Selection -->
-                <TextBlock Text="Color: " VerticalAlignment="Center" FontWeight="Bold"/>
-                <ComboBox x:Name="ColorPicker" SelectedIndex="0" Width="100" Margin="5,0">
-                    <ComboBoxItem Content="Black" Tag="#000000"/>
-                    <ComboBoxItem Content="Red" Tag="#FF0000"/>
-                    <ComboBoxItem Content="Blue" Tag="#0000FF"/>
-                    <ComboBoxItem Content="Green" Tag="#008000"/>
-                    <ComboBoxItem Content="Yellow" Tag="#FFFF00"/>
-                    <ComboBoxItem Content="Purple" Tag="#800080"/>
-                </ComboBox>
-                
-                <Separator Margin="10,0"/>
-                <Button Content="Clear Canvas" Click="Clear_Click" Padding="10,2" Margin="5,0" Background="#FFE6E6" BorderBrush="#FF9999"/>
-                <Separator Margin="10,0"/>
-                <Button Content="Download" Click="Download_Click" Padding="10,2" Margin="5,0" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
-            </StackPanel>
+                <!-- Row 2: Drawing Tools -->
+                <WrapPanel Grid.Row="1">
+                    <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Padding="8,4" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tool:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                            <ComboBox x:Name="ToolPicker" SelectedIndex="0" Width="90" Margin="0" VerticalAlignment="Center"
+                                      SelectionChanged="ToolPicker_SelectionChanged">
+                                <ComboBoxItem Content="Brush" Tag="Brush"/>
+                                <ComboBoxItem Content="Eraser" Tag="Eraser"/>
+                                <ComboBoxItem Content="Pointer" Tag="Pointer"/>
+                                <ComboBoxItem Content="Circle" Tag="Circle"/>
+                                <ComboBoxItem Content="Square" Tag="Square"/>
+                                <ComboBoxItem Content="Rectangle" Tag="Rectangle"/>
+                                <ComboBoxItem Content="Triangle" Tag="Triangle"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Padding="8,4" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Size:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                            <Slider x:Name="BrushSizeSlider" Width="100" Minimum="1" Maximum="20" 
+                                    Value="3" VerticalAlignment="Center" 
+                                    ValueChanged="BrushSizeSlider_ValueChanged"
+                                    ToolTip="Adjust brush size"/>
+                            <TextBlock x:Name="BrushSizeText" Text="3" VerticalAlignment="Center" 
+                                       Width="25" Margin="5,0,0,0" FontWeight="Bold" TextAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="3" Padding="8,4" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Color:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                            <ComboBox x:Name="ColorPicker" SelectedIndex="0" Width="85" Margin="0" VerticalAlignment="Center">
+                                <ComboBoxItem Content="Black" Tag="#000000"/>
+                                <ComboBoxItem Content="Red" Tag="#FF0000"/>
+                                <ComboBoxItem Content="Blue" Tag="#0000FF"/>
+                                <ComboBoxItem Content="Green" Tag="#008000"/>
+                                <ComboBoxItem Content="Yellow" Tag="#FFFF00"/>
+                                <ComboBoxItem Content="Purple" Tag="#800080"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Button Content="Clear Canvas" Click="Clear_Click" Padding="10,4" Margin="0,0,5,0" 
+                            Background="#FFE6E6" BorderBrush="#FF9999" FontWeight="SemiBold" Cursor="Hand"/>
+                    <Button Content="Download PDF" Click="Download_Click" Padding="10,4" 
+                            Background="#4CAF50" Foreground="White" FontWeight="SemiBold" BorderThickness="0" Cursor="Hand"/>
+                </WrapPanel>
+            </Grid>
         </Border>
 
         <Canvas x:Name="DrawingCanvas" Grid.Row="1" Background="White"
