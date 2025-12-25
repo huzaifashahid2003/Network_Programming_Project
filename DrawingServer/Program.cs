@@ -97,20 +97,56 @@ namespace DrawingServer
             try
             {
                 var stream = client.GetStream();
-                var buffer = new byte[8192]; // Larger buffer for drawing data
 
                 while (client.Connected)
                 {
-                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-
-                    if (bytesRead == 0)
+                    // Read 4-byte length prefix
+                    var lengthBuffer = new byte[4];
+                    int bytesRead = 0;
+                    
+                    while (bytesRead < 4)
                     {
-                        // Client disconnected gracefully
+                        int read = await stream.ReadAsync(lengthBuffer, bytesRead, 4 - bytesRead);
+                        if (read == 0)
+                        {
+                            // Client disconnected
+                            return;
+                        }
+                        bytesRead += read;
+                    }
+
+                    // Convert length prefix from big-endian
+                    if (BitConverter.IsLittleEndian)
+                        Array.Reverse(lengthBuffer);
+                    
+                    int messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+
+                    // Validate message length
+                    if (messageLength <= 0 || messageLength > 1024 * 1024) // Max 1MB per message
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] ⚠ Invalid message length from {clientIp}: {messageLength}");
+                        Console.ResetColor();
                         break;
                     }
 
+                    // Read the actual message
+                    var messageBuffer = new byte[messageLength];
+                    bytesRead = 0;
+                    
+                    while (bytesRead < messageLength)
+                    {
+                        int read = await stream.ReadAsync(messageBuffer, bytesRead, messageLength - bytesRead);
+                        if (read == 0)
+                        {
+                            // Client disconnected mid-message
+                            return;
+                        }
+                        bytesRead += read;
+                    }
+
                     // Get the drawing event message
-                    var message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    var message = Encoding.UTF8.GetString(messageBuffer);
 
                     // Broadcast to all other clients
                     await _connectionManager.BroadcastAsync(message, clientId);

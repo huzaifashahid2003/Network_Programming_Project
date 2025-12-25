@@ -183,22 +183,54 @@ namespace DrawingClient
 
         private async Task ReceiveMessagesAsync()
         {
-            var buffer = new byte[8192]; // Larger buffer for drawing data
-
             try
             {
                 while (_isConnected && _networkStream != null && _tcpClient != null && _tcpClient.Connected)
                 {
-                    int bytesRead = await _networkStream.ReadAsync(buffer, 0, buffer.Length, _cts?.Token ?? CancellationToken.None);
-
-                    if (bytesRead == 0)
+                    // Read 4-byte length prefix
+                    var lengthBuffer = new byte[4];
+                    int bytesRead = 0;
+                    
+                    while (bytesRead < 4)
                     {
-                        // Server closed the connection
+                        int read = await _networkStream.ReadAsync(lengthBuffer, bytesRead, 4 - bytesRead, _cts?.Token ?? CancellationToken.None);
+                        if (read == 0)
+                        {
+                            // Server closed the connection
+                            return;
+                        }
+                        bytesRead += read;
+                    }
+
+                    // Convert length prefix from big-endian
+                    if (BitConverter.IsLittleEndian)
+                        Array.Reverse(lengthBuffer);
+                    
+                    int messageLength = BitConverter.ToInt32(lengthBuffer, 0);
+
+                    // Validate message length
+                    if (messageLength <= 0 || messageLength > 1024 * 1024) // Max 1MB
+                    {
                         break;
                     }
 
+                    // Read the actual message
+                    var messageBuffer = new byte[messageLength];
+                    bytesRead = 0;
+                    
+                    while (bytesRead < messageLength)
+                    {
+                        int read = await _networkStream.ReadAsync(messageBuffer, bytesRead, messageLength - bytesRead, _cts?.Token ?? CancellationToken.None);
+                        if (read == 0)
+                        {
+                            // Server disconnected mid-message
+                            return;
+                        }
+                        bytesRead += read;
+                    }
+
                     // Deserialize the received drawing event
-                    var json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    var json = Encoding.UTF8.GetString(messageBuffer);
                     var drawEvent = JsonSerializer.Deserialize<DrawEvent>(json);
 
                     if (drawEvent != null)
@@ -703,8 +735,15 @@ namespace DrawingClient
                 try
                 {
                     var json = JsonSerializer.Serialize(drawEvent);
-                    var buffer = Encoding.UTF8.GetBytes(json);
-                    await _networkStream.WriteAsync(buffer, 0, buffer.Length);
+                    var messageBytes = Encoding.UTF8.GetBytes(json);
+                    
+                    // Send message length as 4-byte prefix (big-endian)
+                    var lengthPrefix = BitConverter.GetBytes(messageBytes.Length);
+                    if (BitConverter.IsLittleEndian)
+                        Array.Reverse(lengthPrefix);
+                    
+                    await _networkStream.WriteAsync(lengthPrefix, 0, 4);
+                    await _networkStream.WriteAsync(messageBytes, 0, messageBytes.Length);
                     await _networkStream.FlushAsync();
                 }
                 catch (Exception)

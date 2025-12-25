@@ -20,6 +20,7 @@ namespace DrawingServer
             public string IpAddress { get; set; }
             public int Port { get; set; }
             public DateTime ConnectedAt { get; set; }
+            public SemaphoreSlim WriteLock { get; set; } = new SemaphoreSlim(1, 1);
 
             public ClientConnection(TcpClient client, string ipAddress, int port)
             {
@@ -84,13 +85,27 @@ namespace DrawingServer
         }
 
         /// <summary>
-        /// Sends a message to a specific client
+        /// Sends a message to a specific client with proper framing (length prefix)
         /// </summary>
         private async Task SendMessageToClientAsync(string clientId, ClientConnection connection, byte[] messageBytes)
         {
+            await connection.WriteLock.WaitAsync();
             try
             {
+                if (!connection.Client.Connected)
+                {
+                    RemoveClient(clientId);
+                    return;
+                }
+
                 var stream = connection.Client.GetStream();
+                
+                // Send message length as 4-byte prefix (big-endian for clarity)
+                var lengthPrefix = BitConverter.GetBytes(messageBytes.Length);
+                if (BitConverter.IsLittleEndian)
+                    Array.Reverse(lengthPrefix);
+                
+                await stream.WriteAsync(lengthPrefix, 0, 4);
                 await stream.WriteAsync(messageBytes, 0, messageBytes.Length);
                 await stream.FlushAsync();
             }
@@ -98,6 +113,10 @@ namespace DrawingServer
             {
                 // If sending fails, remove the client
                 RemoveClient(clientId);
+            }
+            finally
+            {
+                connection.WriteLock.Release();
             }
         }
 
