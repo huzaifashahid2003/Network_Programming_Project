@@ -41,12 +41,12 @@ namespace DrawingClient
                 DrawingCanvas.Cursor = Cursors.Pen;
                 
                 // Force window to foreground
-                this.Topmost = true;
-                this.Activate();
+                // this.Topmost = true;
+                // this.Activate();
                 this.Focus();
                 
                 // Log to console for debugging
-                Console.WriteLine("DrawingClient GUI initialized successfully");
+                // Console.WriteLine("DrawingClient GUI initialized successfully");
                 
                 // Show window explicitly
                 this.Show();
@@ -64,7 +64,7 @@ namespace DrawingClient
             {
                 _currentTool = tool;
                 
-                // Change cursor based on tool (only if DrawingCanvas is initialized)
+              
                 if (DrawingCanvas != null)
                 {
                     DrawingCanvas.Cursor = tool switch
@@ -188,7 +188,7 @@ namespace DrawingClient
                 while (_isConnected && _networkStream != null && _tcpClient != null && _tcpClient.Connected)
                 {
                     // Read 4-byte length prefix
-                    var lengthBuffer = new byte[4];
+                    byte[] lengthBuffer = new byte[4];
                     int bytesRead = 0;
                     
                     while (bytesRead < 4)
@@ -215,7 +215,7 @@ namespace DrawingClient
                     }
 
                     // Read the actual message
-                    var messageBuffer = new byte[messageLength];
+                    byte[] messageBuffer = new byte[messageLength];
                     bytesRead = 0;
                     
                     while (bytesRead < messageLength)
@@ -253,10 +253,10 @@ namespace DrawingClient
                     }
                 }
             }
-            catch (OperationCanceledException)
-            {
-                // Normal cancellation
-            }
+            // catch (OperationCanceledException)
+            // {
+            //     // Normal cancellation
+            // }
             catch (Exception ex)
             {
                 Dispatcher.Invoke(() =>
